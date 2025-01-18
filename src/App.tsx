@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Card from "./components/Card";
 import MapComponent from "./components/MapComponent";
 import SearchBar from "./components/SearchBar";
+import Skeleton from "./components/LoadingSkeleteon";
 
 interface Data {
   ip: string;
@@ -46,9 +47,7 @@ function App() {
 
   const getData = async (query: string) => {
     try {
-      // Determina si el parámetro es una IP o un dominio
-      const isDomain = !/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(query); // Verifica si el query no es una IP
-
+      const isDomain = !/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(query);
       const response = await fetch(
         `https://geo.ipify.org/api/v2/country,city?apiKey=at_ZpaX35YkP6obvnViaC51uGHm2b9UA&${
           isDomain ? `domain=${query}` : `ipAddress=${query}`
@@ -100,7 +99,7 @@ function App() {
           {info && info?.location.lng ? (
             <MapComponent lat={info.location.lat} lng={info.location.lng} />
           ) : (
-            <p>Cargando mapa...</p> // o cualquier componente de carga
+            <Skeleton />
           )}
         </div>
       </div>
